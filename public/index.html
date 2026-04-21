@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>theintentionalroom.site – Home Decor and Interiors</title>
+  <!-- Google Fonts & Font Awesome (no other dependencies) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ----- RESET & VARIABLES ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --bg-light: #F3F1EC;
+      --charcoal: #2C2C2C;
+      --accent: #A88C6D;
+      --white: #ffffff;
+      --off-white: #faf9f7;
+      --shadow-sm: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.02);
+      --shadow-hover: 0 20px 30px -10px rgba(0,0,0,0.08);
+      --border-light: 1px solid rgba(44,44,44,0.06);
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+      --transition: all 0.25s ease;
+    }
+    body {
+      background-color: var(--bg-light);
+      color: var(--charcoal);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      font-weight: 300;
+      opacity: 0;  /* for page transition (fade in) */
+      transition: opacity 0.4s ease-out;
+    }
+    body.fade-in {
+      opacity: 1;
+    }
+    /* smooth anchor scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+    /* containers */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    /* section spacing */
+    section { padding: 5rem 0; }
+    @media (max-width: 768px) { section { padding: 3.5rem 0; } }
+
+    /* headlines */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .section-label {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    /* buttons */
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 0;
+      transition: var(--transition);
+      font-size: 1rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--white);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background-color: transparent;
+      color: var(--charcoal);
+      border-color: var(--charcoal);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--charcoal);
+      color: var(--charcoal);
+    }
+    .btn-outline:hover {
+      background: var(--charcoal);
+      color: var(--bg-light);
+    }
+    /* cards */
+    .service-card, .property-card, .team-card, .testimonial-card {
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .service-card:hover, .property-card:hover, .team-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+    /* header */
+    header {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      padding: 1.5rem 2rem;
+      background: transparent;
+      color: white;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .nav-links a:hover { opacity: 0.8; }
+    .nav-links .btn-signup {
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: 0.45rem 1.4rem;
+      border-radius: 30px;
+      background: transparent;
+      color: white;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .nav-links .btn-signup:hover {
+      background: white;
+      color: var(--charcoal);
+      border-color: white;
+      opacity: 1;
+    }
+    /* mobile menu */
+    .hamburger {
+      display: none;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      z-index: 200;
+    }
+    @media (max-width: 900px) {
+      .nav-links {
+        position: fixed;
+        top: 0; right: 0; bottom: 0; left: 0;
+        background: var(--charcoal);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 150;
+        backdrop-filter: blur(4px);
+      }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links a { color: var(--bg-light); font-size: 1.4rem; text-shadow: none; }
+      .nav-links .btn-signup { border-color: var(--bg-light); color: var(--bg-light); }
+      .hamburger { display: block; position: relative; z-index: 200; }
+      header { padding: 1.2rem 1.5rem; }
+    }
+
+    /* hero */
+    .hero {
+      height: 100vh;
+      min-height: 700px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(44,44,44,0.7)), url('assets/img/bedroom-5.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 5rem;
+      color: white;
+    }
+    .hero-content {
+      max-width: 700px;
+      margin-left: 5%;
+      margin-bottom: 2rem;
+    }
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.8rem); margin-bottom: 1rem; }
+    .hero p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* stats bar */
+    .stats-grid {
+      display: flex;
+      justify-content: space-around;
+      background: var(--white);
+      padding: 2.5rem 1rem;
+      box-shadow: var(--shadow-sm);
+      margin-top: -2rem;
+      position: relative;
+      z-index: 10;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 0;
+      gap: 1rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number { font-size: 2.8rem; font-weight: 700; font-family: var(--font-serif); color: var(--accent); }
+    .stat-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* two column layouts */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (max-width: 800px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* service cards grid */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem;
+    }
+    .service-card {
+      background: var(--white);
+      padding: 2rem 1.5rem;
+    }
+    .service-card i { font-size: 2.2rem; color: var(--accent); margin-bottom: 1rem; }
+    .service-card h4 { margin-bottom: 0.5rem; }
+
+    /* properties grid */
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 900px) { .properties-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 550px) { .properties-grid { grid-template-columns: 1fr; } }
+    .property-card {
+      background: var(--white);
+      padding-bottom: 1.2rem;
+    }
+    .property-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+    }
+    .property-details { padding: 1.5rem 1rem 1rem; }
+    .property-meta { display: flex; gap: 1rem; font-size: 0.9rem; color: #5a5a5a; margin: 0.5rem 0; }
+    .property-location i { margin-right: 0.3rem; color: var(--accent); }
+
+    /* team */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .team-grid { grid-template-columns: 1fr; } }
+    .team-card {
+      background: var(--white);
+      text-align: center;
+      padding-bottom: 1.5rem;
+    }
+    .team-card img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    .team-card h4 { margin-bottom: 0.2rem; }
+    .team-card p { color: var(--accent); font-weight: 400; font-size: 0.9rem; }
+
+    /* testimonials grid */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    @media (max-width: 800px) { .testimonials-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .testimonials-grid { grid-template-columns: 1fr; } }
+    .testimonial-card {
+      background: var(--white);
+      padding: 2rem 1.8rem;
+      border-left: 4px solid var(--accent);
+    }
+    .testimonial-card i { color: var(--accent); font-size: 1.5rem; margin-bottom: 0.8rem; opacity: 0.4; }
+    .testimonial-text { font-style: italic; margin-bottom: 1.2rem; }
+    .client-name { font-weight: 600; }
+    .client-location { font-size: 0.9rem; color: #777; }
+
+    /* faq */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem 4rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 700px) { .faq-grid { grid-template-columns: 1fr; } }
+    .faq-item h4 { margin-bottom: 0.2rem; font-weight: 600; }
+    .faq-item p { color: #3a3a3a; }
+
+    /* contact / footer */
+    .contact-section {
+      background: var(--white);
+      border-top: var(--border-light);
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-light);
+      border: 1px solid #e2dfd9;
+      font-family: var(--font-sans);
+      margin-bottom: 1rem;
+    }
+    .contact-form button { width: 100%; }
+    .contact-info i { color: var(--accent); width: 2rem; }
+    .copyright {
+      text-align: center;
+      padding: 2rem 0 1rem;
+      font-size: 0.9rem;
+      border-top: var(--border-light);
+      margin-top: 3rem;
+      color: #5a5a5a;
+    }
+    .social-links { display: flex; gap: 1.2rem; margin-top: 1rem; }
+    .social-links a { color: var(--charcoal); font-size: 1.3rem; transition: color 0.2s; }
+    .social-links a:hover { color: var(--accent); }
+
+    /* cookie banner */
+    .cookie-consent {
+      position: fixed;
+      bottom: 20px; left: 20px; right: 20px;
+      max-width: 400px;
+      background: var(--charcoal);
+      color: var(--bg-light);
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .cookie-consent button {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 0.4rem 1.4rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Cookie consent popup (hidden by default) -->
+  <div id="cookieConsent" class="cookie-consent">
+    <span>We use cookies to improve your experience. By continuing, you accept our use of cookies.</span>
+    <button id="acceptCookies">Accept</button>
+  </div>
+
+  <!-- Header & navigation -->
+  <header>
+    <nav class="navbar">
+      <a href="#home" class="logo">theintentionalroom</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="menu"><i class="fas fa-bars"></i></button>
+      <div class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#properties">Properties</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home">
+    <!-- Hero section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Find Your Perfect Home Today</h1>
+        <p>We provide tailored home decor services, guiding you through every step with personalized experiences.</p>
+        <div class="hero-buttons">
+          <a href="#properties" class="btn btn-primary">Explore Listings</a>
+          <a href="#about" class="btn btn-outline" style="border-color:white; color:white;">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats bar -->
+    <div class="container" style="margin-top: -2rem; position: relative; z-index: 15;">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-number">200+</div><div class="stat-label">Projects Complete</div></div>
+        <div class="stat-item"><div class="stat-number">70+</div><div class="stat-label">Happy Clients</div></div>
+        <div class="stat-item"><div class="stat-number">$10M+</div><div class="stat-label">Project Value</div></div>
+        <div class="stat-item"><div class="stat-number">15</div><div class="stat-label">Expert Agents</div></div>
+      </div>
+    </div>
+
+    <!-- Services / What We Offer -->
+    <section id="services">
+      <div class="container two-col">
+        <div>
+          <span class="section-label">What We Offer</span>
+          <h2 style="font-size: 2.6rem; margin-bottom: 1rem;">Comprehensive Home Decor and Interiors Solutions</h2>
+          <p style="font-size: 1.1rem; color: #3e3e3e;">From luxury sales to property management, we combine deep market knowledge with tailored guidance. Your journey is unique, and we’re here to make it seamless.</p>
+        </div>
+        <div class="service-grid">
+          <div class="service-card"><i class="fas fa-crown"></i><h4>Luxury Sales</h4><p>Exclusive high-end properties with white-glove service.</p></div>
+          <div class="service-card"><i class="fas fa-building"></i><h4>Property Mgt</h4><p>Full‑service management for investors.</p></div>
+          <div class="service-card"><i class="fas fa-handshake"></i><h4>Buyer’s Agency</h4><p>We represent you in finding dream homes.</p></div>
+          <div class="service-card"><i class="fas fa-chart-line"></i><h4>Market Analysis</h4><p>Data-driven insights for smart decisions.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Properties -->
+    <section id="properties" style="background-color: #fff;">
+      <div class="container">
+        <h2 style="font-size: 2.8rem; text-align: center;">Featured Properties</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Hand-picked homes that redefine elegance.</p>
+        <div class="properties-grid">
+          <div class="property-card"><img src="assets/img/bedroom-2.jpg" alt="Luxury bedroom interior"><div class="property-details"><div class="property-meta"><span>4 beds</span><span>3 baths</span><span>2,800 sqft</span></div><div class="property-location"><i class="fas fa-map-pin"></i> Beverly Hills, CA</div></div></div>
+          <div class="property-card"><img src="assets/img/bedroom-3.jpg" alt="Modern bedroom design"><div class="property-details"><div class="property-meta"><span>3 beds</span><span>2 baths</span><span>2,100 sqft</span></div><div class="property-location"><i class="fas fa-map-pin"></i> Austin, TX</div></div></div>
+          <div class="property-card"><img src="assets/img/plants.jpg" alt="Living space with plants"><div class="property-details"><div class="property-meta"><span>5 beds</span><span>4 baths</span><span>3,950 sqft</span></div><div class="property-location"><i class="fas fa-map-pin"></i> Greenwich, CT</div></div></div>
+          <div class="property-card"><img src="assets/img/plants-2.jpg" alt="Contemporary room with greenery"><div class="property-details"><div class="property-meta"><span>3 beds</span><span>2 baths</span><span>1,900 sqft</span></div><div class="property-location"><i class="fas fa-map-pin"></i> Denver, CO</div></div></div>
+          <div class="property-card"><img src="assets/img/bathroom-decor.jpg" alt="Stylish bathroom decor"><div class="property-details"><div class="property-meta"><span>4 beds</span><span>3 baths</span><span>3,200 sqft</span></div><div class="property-location"><i class="fas fa-map-pin"></i> Seattle, WA</div></div></div>
+          <div class="property-card"><img src="assets/img/bathroom-decor3.jpg" alt="Luxury bathroom interior"><div class="property-details"><div class="property-meta"><span>6 beds</span><span>5 baths</span><span>5,200 sqft</span></div><div class="property-location"><i class="fas fa-map-pin"></i> Miami, FL</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+      <div class="container two-col">
+        <div><img src="assets/img/plant-sofa.jpg" alt="modern home" style="width:100%; height:auto; box-shadow: var(--shadow-sm);"></div>
+        <div>
+          <span class="section-label">Who We Are</span>
+          <h2 style="font-size: 2.5rem;">Redefining Excellence in Home Decor and Interiors</h2>
+          <p style="margin: 1.5rem 0;">With a legacy of trust and a vision for the future, The Intentional Room crafts exceptional home decor and interiors journeys. We believe in integrity, personal connection, and architectural beauty.</p>
+          <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+            <div><span class="stat-number" style="font-size:2rem;">15+</span><br>years of craft</div>
+            <div><span class="stat-number" style="font-size:2rem;">100%</span><br>client satisfaction</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section style="background-color: #fff;" id="team">
+      <div class="container">
+        <h2 style="font-size: 2.8rem; text-align: center;">Meet Our Experts</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Dedicated, experienced, and passionate.</p>
+        <div class="team-grid">
+          <div class="team-card"><img src="assets/img/women-profile-red.jpeg" alt="Sophia Reynolds"><h4>Sophia Reynolds</h4><p>Founder & Lead Agent</p></div>
+          <div class="team-card"><img src="assets/img/profile-black-men-2.jpeg" alt="James Carter"><h4>James Carter</h4><p>Senior Buyer’s Agent</p></div>
+          <div class="team-card"><img src="assets/img/women-profile-white.jpeg" alt="Elena Wu"><h4>Elena Wu</h4><p>Luxury Specialist</p></div>
+          <div class="team-card"><img src="assets/img/black-men-profilejpeg" alt="Marcus Velez"><h4>Marcus Velez</h4><p>Property Management</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+      <div class="container">
+        <h2 style="font-size: 2.8rem; text-align: center;">Client Stories</h2>
+        <p style="text-align: center; margin-bottom: 3rem;">What our clients say</p>
+        <div class="testimonials-grid">
+          <div class="testimonial-card"><i class="fas fa-quote-right"></i><div class="testimonial-text">“Absolute professionals. Found us our dream home in under a month.”</div><div class="client-name">Patricia Moore</div><div class="client-location">Manhattan</div></div>
+          <div class="testimonial-card"><i class="fas fa-quote-right"></i><div class="testimonial-text">“The intentional room made selling our property feel effortless. Highest recommendation.”</div><div class="client-name">David Chen</div><div class="client-location">San Francisco</div></div>
+          <div class="testimonial-card"><i class="fas fa-quote-right"></i><div class="testimonial-text">“Their market analysis helped us invest wisely. We’re clients for life.”</div><div class="client-name">Linda Harper</div><div class="client-location">Chicago</div></div>
+          <div class="testimonial-card"><i class="fas fa-quote-right"></i><div class="testimonial-text">“Luxury service without the attitude. Every detail was perfect.”</div><div class="client-name">Robert Kingsley</div><div class="client-location">Miami</div></div>
+          <div class="testimonial-card"><i class="fas fa-quote-right"></i><div class="testimonial-text">“They listened to our needs and delivered beyond expectation.”</div><div class="client-name">Amara Okafor</div><div class="client-location">Atlanta</div></div>
+          <div class="testimonial-card"><i class="fas fa-quote-right"></i><div class="testimonial-text">“A wonderful, stress-free experience. Thank you!”</div><div class="client-name">Jonathan Blake</div><div class="client-location">Denver</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" style="background-color: #fff;">
+      <div class="container">
+        <h2 style="font-size: 2.8rem; text-align: center;">Help Center</h2>
+        <p style="text-align: center;">Frequently asked questions</p>
+        <div class="faq-grid">
+          <div class="faq-item"><h4>How do I start the buying process?</h4><p>Contact one of our agents for a free consultation.</p></div>
+          <div class="faq-item"><h4>What areas do you serve?</h4><p>We cover major metropolitan areas across the U.S.</p></div>
+          <div class="faq-item"><h4>Do you offer virtual tours?</h4><p>Yes, all our listings include 3D walkthroughs.</p></div>
+          <div class="faq-item"><h4>What are your commission rates?</h4><p>We offer transparent, competitive rates – ask our team.</p></div>
+          <div class="faq-item"><h4>Can you help with selling first?</h4><p>Absolutely, we specialize in seamless transitions.</p></div>
+          <div class="faq-item"><h4>Are you a licensed brokerage?</h4><p>Fully licensed and insured in all operating states.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <section id="contact" class="contact-section">
+      <div class="container two-col">
+        <div>
+          <h2 style="font-size: 2.5rem;">Let’s Make Your Property Journey Effortless</h2>
+          <p style="margin: 1rem 0 2rem;">Reach out for a personal conversation.</p>
+          <form id="contactForm" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <textarea name="message" rows="4" placeholder="How can we help?" required></textarea>
+            <button type="submit" class="btn btn-primary">Send message</button>
+          </form>
+        </div>
+        <div class="contact-info">
+          <p><i class="fas fa-map-marker-alt"></i> 4150 Design Ave, Suite 200, Los Angeles, CA</p>
+          <p><i class="fas fa-phone"></i> (424) 555-0173</p>
+          <p><i class="fas fa-envelope"></i> hello@theintentionalroom.site</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="container copyright">
+        <p>© 2025 theintentionalroom.site — All rights reserved.  
+        <span style="margin-left: 2rem;"><a href="privacy.html" style="color:var(--charcoal);">Privacy Policy</a> | <a href="terms.html" style="color:var(--charcoal);">Terms &amp; Conditions</a></span></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      // PAGE TRANSITIONS + NAVIGATION (smooth internal links)
+      document.body.classList.add('fade-in');
+
+      // Handle all internal anchor links with transition
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            // fade out quickly, scroll, fade back
+            document.body.style.transition = 'opacity 0.15s';
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+              window.location.hash = targetId;
+              targetEl.scrollIntoView({ behavior: 'smooth' });
+              document.body.style.opacity = '1';
+            }, 150);
+          }
+        });
+      });
+
+      // Hamburger menu
+      const hamburger = document.getElementById('hamburgerBtn');
+      const navLinks = document.getElementById('navLinks');
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+      // close on link click (mobile)
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => navLinks.classList.remove('active'));
+      });
+
+      // Contact form validation + alert
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = this.name.value.trim();
+        const email = this.email.value.trim();
+        const message = this.message.value.trim();
+        if (!name || !email || !message) {
+          alert('Please fill in all fields.');
+          return;
+        }
+        if (!email.includes('@') || !email.includes('.')) {
+          alert('Enter a valid email address.');
+          return;
+        }
+        alert(`Thanks for reaching out, ${name}. We’ll respond within 24h.`);
+        this.reset();
+      });
+
+      // Cookie consent with localStorage
+      const cookieBox = document.getElementById('cookieConsent');
+      const acceptBtn = document.getElementById('acceptCookies');
+      if (!localStorage.getItem('cookieConsent')) {
+        cookieBox.style.display = 'flex';
+      }
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'true');
+        cookieBox.style.display = 'none';
+      });
+
+    })();
+  </script>
+</body>
+</html>
